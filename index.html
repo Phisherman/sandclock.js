@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script data-require="d3@*" data-semver="3.4.6" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js"></script>
+  <style>
+    .background {
+      fill: white;
+      stroke: none;
+    }
+    .gray-fill {
+      fill: #E8E8E8;
+      stroke: none;
+    }
+    .sand {
+      fill: #388EFF;
+      stroke: none;
+    }
+  </style>
+</head>
+
+<body>
+  <svg class="sandclock"></svg>
+  <script>
+    var width = "240";
+    var height = "400";
+    var bottleneckWidthInPercent = "0.04";
+    var bottleneckWidthInPx = width * bottleneckWidthInPercent;
+    var margins = {
+      top: 10,
+      left: 10,
+      right: 10,
+      bottom: 10
+    };
+    var progress = 0.91;
+    var maxProgressTop = 0.9;
+    var maxTop = 0.5;
+    var maxBottom = maxTop;
+    var currentTop = progress <= maxProgressTop ?
+      height / 2 * maxTop / maxProgressTop * (maxProgressTop - progress) : 0;
+    var currentBottom = (height / 2) * maxBottom * (progress);
+
+    var canvas = d3.select(".sandclock")
+      .style("width", width)
+      .style("height", height)
+      .style("background", "#E8E8E8");
+
+    var sandTop = canvas.append("rect")
+      .attr("class", "sand")
+      .attr("x", 0)
+      .attr("y", height / 2 - currentTop)
+      .attr("width", width)
+      .attr("height", currentTop);
+
+    var sandBottom = canvas.append("path")
+      .attr("class", "sand")
+      .attr("d", function() {
+        var data = [
+          [0, height],
+          [width, height],
+          [width / 2, progress <= 0.1 ? height : height - currentBottom]
+        ];
+        var path = "M" + data.join("L") + "Z";
+        return path;
+      });
+
+    var sandJet = canvas.append("rect")
+      .attr("class", "sand")
+      .attr("x", (width - bottleneckWidthInPx) / 2)
+      .attr("y", progress >= 0.9 ? height / 2 + height / 2 * (progress - 0.9) * 10 : height / 2)
+      .attr("width", bottleneckWidthInPx)
+      .attr("height", progress <= 0.1 ? height / 2 * progress * 10 : height / 2);
+
+    var left = canvas.append("path")
+      .attr("class", "background")
+      .attr("d", function() {
+        var data = [
+          [0, 0],
+          [0, height],
+          [(width - bottleneckWidthInPx) / 2, height / 2]
+        ];
+        var path = "M" + data.join("L") + "Z";
+        return path;
+      });
+
+    var right = canvas.append("path")
+      .attr("class", "background")
+      .attr("d", function() {
+        var data = [
+          [width, 0],
+          [width, height],
+          [width - (width - bottleneckWidthInPx) / 2, height / 2]
+        ];
+        var path = "M" + data.join("L") + "Z";
+        return path;
+      });
+  </script>
+</body>
+
+</html>
