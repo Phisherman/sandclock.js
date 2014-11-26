@@ -1,0 +1,15 @@
+svg{
+  background-color: #dedede;
+}
+.background {
+  fill: white;
+  stroke: none;
+}
+.gray-fill {
+  fill: #E8E8E8;
+  stroke: none;
+}
+.sand {
+  fill: #388EFF;
+  stroke: none;
+}
