@@ -43,16 +43,18 @@ var sandclock;
             height: 240,
             bottleneck: 0.04,
             margins: {
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0
+                top: 10,
+                left: 10,
+                right: 10,
+                bottom: 10
             },
             background: "white",
             progress: 0,
             maxTop: 0.5,
             maxBottom: 0.5,
-            selector: undefined
+            selector: undefined,
+            useTransitions: true,
+            transitionDuration: 400
         };
 
         return clone(defaultOptions);
@@ -103,7 +105,8 @@ var sandclock;
 
         var canvas = d3.select(options.selector)
             .style("width", options.width)
-            .style("height", options.height);
+            .style("height", options.height)
+            .style("opacity", options.useTransitions ? 0 : 1);
 
         var sandTop = canvas.append("rect")
             .attr("class", "sand")
@@ -154,5 +157,12 @@ var sandclock;
                 var path = "M" + data.join("L") + "Z";
                 return path;
             });
+
+        if (options.useTransitions) {
+            d3.select(options.selector)
+                .transition()
+                .duration(options.transitionDuration)
+                .style("opacity", 1);
+        }
     }
 }());
