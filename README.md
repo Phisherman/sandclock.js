@@ -5,7 +5,7 @@ Just a simple svg sandclock, made with d3.js.
 
 
 ## demo
-Take a look at this plunker to see the sandlock: [plunker][sandclock]
+Take a look at this plunker to see the sandclock: [plunker][sandclock]
 
 [sandclock]: http://plnkr.co/edit/fFIqrTSQbh3JVetX7I8F?p=preview
 
