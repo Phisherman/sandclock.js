@@ -142,7 +142,7 @@ var sandclock;
       .attr("height", options.currentTop);
 
     var sandJetY = options.progress >= options.progressEndJet ? options.height / 2 + options.height / 2 * (options.progress - options.progressEndJet) * 10 : options.height / 2;
-    var sandJetHeight = options.progress <= options.progressStartJet ? options.height / 2 * options.progress * 10 : (options.height - options.currentBottom) / 2;
+    var sandJetHeight = options.progress <= options.progressStartJet ? options.height / 2 / (1 - options.progressStartJet) * options.progress * 10 : (options.height - options.currentBottom) / 2;
 
     var sandJet = canvas.select("rect:nth-child(2)")
       .transition()
@@ -187,7 +187,7 @@ var sandclock;
       .attr("height", options.currentTop);
 
     var sandJetY = options.progress >= options.progressEndJet ? options.height / 2 + options.height / 2 * (options.progress - options.progressEndJet) * 10 : options.height / 2;
-    var sandJetHeight = options.progress <= options.progressStartJet ? options.height / 2 * options.progress * 10 : (options.height - options.currentBottom) / 2;
+    var sandJetHeight = options.progress <= options.progressStartJet ? options.height / 2 / (1 - options.progressStartJet) * options.progress * 10 : (options.height - options.currentBottom) / 2;
 
     var sandJet = canvas.append("rect")
       .attr("class", "sand")
