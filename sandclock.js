@@ -85,6 +85,10 @@ var sandclock;
     return this;
   };
   sandclock.prototype.progress = function(progress) {
+
+    //save last progress state for update animation
+    this.options.oldProgress = this.options.progress;
+
     this.options.progress = progress;
     return this;
   };
@@ -106,9 +110,12 @@ var sandclock;
   }
   sandclock.prototype.updateOptions = function() {
     var options = this.options;
-
+    if (typeof options.oldProgress === "undefined")
+      options.oldProgress = options.progress;
     options.bottleneckInPx = options.width * options.bottleneck;
     options.maxProgressTop = 0.9;
+    options.progressStartJet = 0.1;
+    options.progressEndJet = 0.9;
     options.currentTop = options.progress <= options.maxProgressTop ?
       options.height / 2 * options.maxTop / options.maxProgressTop * (options.maxProgressTop - options.progress) : 0;
     options.currentBottom = options.height / 2 * options.maxBottom * options.progress;
@@ -134,12 +141,12 @@ var sandclock;
       .attr("width", options.width)
       .attr("height", options.currentTop);
 
-    var sandJetY = options.progress >= 0.9 ? options.height / 2 + options.height / 2 * (options.progress - 0.9) * 10 : options.height / 2;
-    var sandJetHeight = options.progress <= 0.1 ? options.height / 2 * options.progress * 10 : (options.height - options.currentBottom) / 2;
+    var sandJetY = options.progress >= options.progressEndJet ? options.height / 2 + options.height / 2 * (options.progress - options.progressEndJet) * 10 : options.height / 2;
+    var sandJetHeight = options.progress <= options.progressStartJet ? options.height / 2 * options.progress * 10 : (options.height - options.currentBottom) / 2;
 
     var sandJet = canvas.select("rect:nth-child(2)")
       .transition()
-      .delay(options.transitionDelay + options.transitionDuration / 2)
+      .delay(options.transitionDelay)
       .duration(options.transitionDuration / 2)
       .ease("linear")
       .attr("class", "sand")
@@ -157,7 +164,7 @@ var sandclock;
         var data = [
           [0, options.height],
           [options.width, options.height],
-          [options.width / 2, options.progress <= 0.1 ? options.height : options.height - options.currentBottom]
+          [options.width / 2, options.progress <= options.progress.progressStartJet ? options.height : options.height - options.currentBottom]
         ];
         var path = "M" + data.join("L") + "Z";
         return path;
@@ -179,8 +186,8 @@ var sandclock;
       .attr("width", options.width)
       .attr("height", options.currentTop);
 
-    var sandJetY = options.progress >= 0.9 ? options.height / 2 + options.height / 2 * (options.progress - 0.9) * 10 : options.height / 2;
-    var sandJetHeight = options.progress <= 0.1 ? options.height / 2 * options.progress * 10 : (options.height - options.currentBottom) / 2;
+    var sandJetY = options.progress >= options.progressEndJet ? options.height / 2 + options.height / 2 * (options.progress - options.progressEndJet) * 10 : options.height / 2;
+    var sandJetHeight = options.progress <= options.progressStartJet ? options.height / 2 * options.progress * 10 : (options.height - options.currentBottom) / 2;
 
     var sandJet = canvas.append("rect")
       .attr("class", "sand")
@@ -195,7 +202,7 @@ var sandclock;
         var data = [
           [0, options.height],
           [options.width, options.height],
-          [options.width / 2, options.progress <= 0.1 ? options.height : options.height - options.currentBottom]
+          [options.width / 2, options.progress <= options.progressStartJet ? options.height : options.height - options.currentBottom]
         ];
         var path = "M" + data.join("L") + "Z";
         return path;
