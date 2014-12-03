@@ -134,7 +134,7 @@ var sandclock;
       .transition()
       .delay(options.transitionDelay)
       .duration(options.transitionDuration / 2)
-      .ease("cubic")
+      .ease("linear")
       .attr("class", "sand")
       .attr("x", 0)
       .attr("y", options.height / 2 - options.currentTop)
@@ -159,12 +159,13 @@ var sandclock;
       .transition()
       .delay(options.transitionDelay)
       .duration(options.transitionDuration)
+      .ease("linear")
       .attr("class", "sand")
       .attr("d", function() {
         var data = [
           [0, options.height],
           [options.width, options.height],
-          [options.width / 2, options.progress <= options.progress.progressStartJet ? options.height : options.height - options.currentBottom]
+          [options.width / 2, options.progress <= options.progressStartJet ? options.height : options.height - options.currentBottom]
         ];
         var path = "M" + data.join("L") + "Z";
         return path;
